@@ -1,26 +1,26 @@
 
 // K155IDの制御ピン
-int pinA = 13;
-int pinB = 11;
-int pinC = 10;
-int pinD = 12;
+const int pinA = 13;
+const int pinB = 11;
+const int pinC = 10;
+const int pinD = 12;
 // 入力ボタンの制御ピン
-int button1 = 19;
-int button2 = 18;
-int button3 = 17;
-int button4 = 16;
+const int button1 = 19;
+const int button2 = 18;
+const int button3 = 17;
+const int button4 = 16;
 // ニキシー管の制御ピン（フォトダイオードのON/OFF）
-int tube[8] = { 9, 8, 7, 6, 5, 4, 3, 2};
+const int tube[8] = { 9, 8, 7, 6, 5, 4, 3, 2};
 // ニキシー管の左右のドットの制御ピン（フォトダイオードのON/OFF）
-int lPiriod = 15;
-int rPiriod = 14;
+const int lPiriod = 15;
+const int rPiriod = 14;
 // ボタンの状態を保存する変数
 int btnSts1 = 0;
 int btnSts2 = 0;
 int btnSts3 = 0;
 int btnSts4 = 0;
 // K155IDでどう情報を送れば各数字が表示されるかのマトリクス
-int nixiNums[11][4] = {
+const int nixiNums[11][4] = {
 {0,0,0,0}, //0
 {0,0,0,1}, //1
 {0,0,1,0}, //2
@@ -34,7 +34,7 @@ int nixiNums[11][4] = {
 {1,1,1,1}  //10(非表示)
 };
 // ダーバージェンスを設定する項目（10は非表示
-int displayNum[10][8] = {
+const int displayNum[10][8] = {
 {0,10,0,0,0,0,0,0}, // 1
 {0,10,5,7,1,0,2,4}, // 2
 {0,10,5,7,1,0,1,5}, // 3
@@ -48,7 +48,7 @@ int displayNum[10][8] = {
 };
 // ダイバージェンスのドットの表示位置を設定する項目
 // 1が右のドット、2が左ドット、3が左右両方のドット
-int displayDot[10][8] = {
+const int displayDot[10][8] = {
 {0,1,0,0,0,0,0,0}, // 1
 {0,1,0,0,0,0,0,0}, // 2
 {0,1,0,0,0,0,0,0}, // 3
@@ -81,9 +81,9 @@ int clockTime[8] = {0,0,0,0,0,0,0,0};
 
 // 固定値
 // ドット無し
-int noDot[8]   = {0,0,0,0,0,0,0,0};
+const int noDot[8]   = {0,0,0,0,0,0,0,0};
 // 時計用のドット表示
-int timeDot[8] = {0,0,1,0,0,1,0,0};
+const int timeDot[8] = {0,0,1,0,0,1,0,0};
 
 
 // 起動して最初に一度実行されるところ
