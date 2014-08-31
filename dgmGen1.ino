@@ -1,38 +1,22 @@
+#define getNbitFromNum(num,n) ((num&(0x01 << n))>0 ? 0x01 : 0x00)
 
 // K155IDの制御ピン
-int pinA = 13;
-int pinB = 11;
-int pinC = 10;
-int pinD = 12;
+const int output[] = { 13, 11, 10, 12 };
 // 入力ボタンの制御ピン
-int button1 = 19;
-int button2 = 18;
-int button3 = 17;
-int button4 = 16;
+const int button1 = 19;
+const int button2 = 18;
+const int button3 = 17;
+const int button4 = 16;
 // ニキシー管の制御ピン（フォトダイオードのON/OFF）
-int tube[8] = { 9, 8, 7, 6, 5, 4, 3, 2};
+const int tube[8] = { 9, 8, 7, 6, 5, 4, 3, 2};
 // ニキシー管の左右のドットの制御ピン（フォトダイオードのON/OFF）
-int lPiriod = 15;
-int rPiriod = 14;
+const int lPiriod = 15;
+const int rPiriod = 14;
 // ボタンの状態を保存する変数
 int btnSts1 = 0;
 int btnSts2 = 0;
 int btnSts3 = 0;
 int btnSts4 = 0;
-// K155IDでどう情報を送れば各数字が表示されるかのマトリクス
-int nixiNums[11][4] = {
-{0,0,0,0}, //0
-{0,0,0,1}, //1
-{0,0,1,0}, //2
-{0,0,1,1}, //3
-{0,1,0,0}, //4
-{0,1,0,1}, //5
-{0,1,1,0}, //6
-{0,1,1,1}, //7
-{1,0,0,0}, //8
-{1,0,0,1},  //9
-{1,1,1,1}  //10(非表示)
-};
 // ダーバージェンスを設定する項目（10は非表示
 int displayNum[10][8] = {
 {0,10,0,0,0,0,0,0}, // 1
@@ -89,19 +73,13 @@ int timeDot[8] = {0,0,1,0,0,1,0,0};
 // 起動して最初に一度実行されるところ
 void setup() {                
   // ArduinoのIOピンを用途に合わせて初期化する
-  pinMode(pinA, OUTPUT);
-  pinMode(pinB, OUTPUT);     
-  pinMode(pinC, OUTPUT);     
-  pinMode(pinD, OUTPUT);
+  for ( int i=0; i<4; ++i ) {
+    pinMode(output[i], OUTPUT);
+  }
   
-  pinMode(tube[0], OUTPUT);
-  pinMode(tube[1], OUTPUT);
-  pinMode(tube[2], OUTPUT);
-  pinMode(tube[3], OUTPUT);
-  pinMode(tube[4], OUTPUT);
-  pinMode(tube[5], OUTPUT);
-  pinMode(tube[6], OUTPUT);
-  pinMode(tube[7], OUTPUT);
+  for ( int i=0; i<8; ++i ) {
+    pinMode(tube[i], OUTPUT);
+  }
   
   pinMode(lPiriod, OUTPUT);
   pinMode(rPiriod, OUTPUT);
@@ -248,10 +226,9 @@ void dispData(int* dataVal, int* dotVal) {
   // ニキシー管を左から切り替えてダイナミック点灯させる
   for(int i = 0; i < 8;i++) {
     // K155IDに適切な値を送りニキシー管の任意の数字を選択
-    digitalWrite(pinD, nixiNums[dataVal[i]][0]);
-    digitalWrite(pinC, nixiNums[dataVal[i]][1]);
-    digitalWrite(pinB, nixiNums[dataVal[i]][2]);
-    digitalWrite(pinA, nixiNums[dataVal[i]][3]);
+    for ( int j=3; j<=0; --j ) {
+      digitalWrite(output[j], getNbitFromNum(dataVal[i],j) );
+    }
     // ニキシー管の電源をON
     digitalWrite(tube[i], HIGH);
     // 500マイクロ秒点灯して表示
@@ -263,10 +240,9 @@ void dispData(int* dataVal, int* dotVal) {
     // ドットの表示があればドットの表示をする。
     if (dotVal[i] == 1) {
       // K155IDに数字を表示しないような情報をおくる。
-      digitalWrite(pinD, 1);
-      digitalWrite(pinC, 1);
-      digitalWrite(pinB, 1);
-      digitalWrite(pinA, 1);
+      for ( int j=0; j<4; ++j ) {
+        digitalWrite(output[j], 1);
+      }
       digitalWrite(rPiriod, HIGH);
       digitalWrite(tube[i], HIGH);
       delayMicroseconds(200); // ドットは同じ時間表示させると明るすぎるため時間を短く設定
@@ -274,10 +250,9 @@ void dispData(int* dataVal, int* dotVal) {
       digitalWrite(rPiriod, LOW);      
       delayMicroseconds(200);
     } else if (dotVal[i] == 2) {
-      digitalWrite(pinD, 1);
-      digitalWrite(pinC, 1);
-      digitalWrite(pinB, 1);
-      digitalWrite(pinA, 1);
+      for ( int j=0; j<4; ++j ) {
+        digitalWrite(output[j], 1);
+      }
       digitalWrite(lPiriod, HIGH);
       digitalWrite(tube[i], HIGH);
       delayMicroseconds(200);
@@ -285,10 +260,9 @@ void dispData(int* dataVal, int* dotVal) {
       digitalWrite(lPiriod, LOW);      
       delayMicroseconds(200);
     } else if (dotVal[i] == 3) {
-      digitalWrite(pinD, 1);
-      digitalWrite(pinC, 1);
-      digitalWrite(pinB, 1);
-      digitalWrite(pinA, 1);
+      for ( int j=0; j<4; ++j ) {
+        digitalWrite(output[j], 1);
+      }
       digitalWrite(rPiriod, HIGH);
       digitalWrite(tube[i], HIGH);
       delayMicroseconds(200);
